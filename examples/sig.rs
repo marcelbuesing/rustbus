@@ -4,10 +4,9 @@ use rustbus::message::DictMap;
 use rustbus::message_builder::MessageBuilder;
 
 fn main() {
-    let session_path = rustbus::client_conn::get_session_bus_path().unwrap();
-    let mut con = rustbus::client_conn::Conn::connect_to_bus(session_path, true).unwrap();
-    con.send_message(rustbus::standard_messages::hello())
-        .unwrap();
+    let session_path = rustbus::client_conn::get_session_bus_path()?;
+    let mut con = rustbus::client_conn::Conn::connect_to_bus(session_path, true)?;
+    con.send_message(rustbus::standard_messages::hello())?;
 
     let mut dict = DictMap::new();
     dict.insert("Key1".to_owned().into(), 100i32.into());
@@ -30,6 +29,6 @@ fn main() {
             Container::Dict(dict).into(),
         ])
         .build();
-    con.send_message(sig.clone()).unwrap();
-    con.send_message(sig).unwrap();
+    con.send_message(sig.clone())?;
+    con.send_message(sig)?;
 }

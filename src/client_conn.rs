@@ -35,8 +35,8 @@ pub struct RpcConn {
 /// ```rust,no_run
 /// use rustbus::message;
 ///
-/// let session_path = rustbus::client_conn::get_session_bus_path().unwrap();
-/// let con = rustbus::client_conn::Conn::connect_to_bus(session_path, true).unwrap();
+/// let session_path = rustbus::client_conn::get_session_bus_path()?;
+/// let con = rustbus::client_conn::Conn::connect_to_bus(session_path, true)?;
 /// let mut rpc_con = rustbus::client_conn::RpcConn::new(con);
 ///
 /// rpc_con.set_filter(Box::new(|msg| match msg.typ {
@@ -376,8 +376,7 @@ impl Conn {
             &[ControlMessage::ScmRights(&msg.raw_fds)],
             flags,
             None,
-        )
-        .unwrap();
+        )?;
         assert_eq!(l, self.msg_buf_out.len());
         Ok(msg)
     }
